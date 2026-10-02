@@ -1,2 +1,10 @@
 /** @type {import('next').NextConfig} */
-export default { reactStrictMode: true };
+const nextConfig = {
+  output: "export",
+  basePath: "/Cakeshop",
+  images: {
+    unoptimized: true,
+  },
+};
+
+export default nextConfig;

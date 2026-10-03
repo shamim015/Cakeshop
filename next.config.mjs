@@ -1,17 +1,17 @@
-/** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-// GitHub repo name = "Cakeshop" (case-sensitive!)
-const basePath = isProd ? "/Cakeshop" : "";
+const isGithubPages = process.env.GITHUB_ACTIONS === "true";
+const repo = "Cakeshop";
 
-export default {
-  reactStrictMode: true,
-  output: "export",          // static site for GitHub Pages
-  basePath,
-  assetPrefix: basePath || undefined,
-  trailingSlash: true,
-  images: {
-    loader: "custom",
-    loaderFile: "./image-loader.js",
-  },
-  env: { NEXT_PUBLIC_BASE_PATH: basePath },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  ...(isGithubPages && {
+    output: "export",
+    basePath: `/${repo}`,
+    assetPrefix: `/${repo}/`,
+    images: {
+      loader: "custom",
+      loaderFile: "./image-loader.js",
+    },
+  }),
 };
+
+export default nextConfig;

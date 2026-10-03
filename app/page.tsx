@@ -6,5 +6,17 @@ import BestSellers from "@/components/BestSellers";
 import CustomCakeBanner from "@/components/CustomCakeBanner";
 import Footer from "@/components/Footer";
 export default function Home() {
-  return (<><Header /><main><Hero /><Features /><CategorySection /><BestSellers /><CustomCakeBanner /></main><Footer /></>);
-}
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <Features />
+        <CategorySection />
+        <BestSellers />
+        <CustomCakeBanner />
+      </main>
+      <Footer />
+    </>
+  );
+} 

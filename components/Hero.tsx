@@ -28,7 +28,7 @@ export default function Hero() {
         {/* TODO: replace with /public/images/hero-cake.jpg */}
         <div className="relative h-[300px] md:absolute md:inset-y-0 md:right-0 md:h-auto md:w-[50%]">
           <Image
-            src="/images/hero-cake.jpg"
+            src="/images/hero-cake.png"
             alt="Pink rose cake on a cake stand"
             fill
             priority

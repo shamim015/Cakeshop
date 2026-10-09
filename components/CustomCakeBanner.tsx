@@ -25,7 +25,7 @@ export default function CustomCakeBanner() {
         <div className="relative md:h-full">
           <div className="relative mx-auto h-[220px] w-full max-w-[360px] md:absolute md:-top-8 md:left-[22%] md:mx-0 md:h-[228px] md:w-[326px] md:max-w-none">
             <Image
-              src="/images/custom-cake.jpg"
+              src="/images/chocolate-delight.webp"
               alt="Chocolate custom cake"
               fill
               sizes="(min-width:768px) 326px, 100vw"

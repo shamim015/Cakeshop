@@ -35,3 +35,116 @@ body {
     @apply mx-auto mt-2 block h-[2px] w-12 bg-brand;
   }
 }
+
+/* ---------- Best Sellers animations ---------- */
+
+/* Scroll reveal (staggered via --i set in Reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Heading underline grows in after the heading appears */
+.reveal .title-line {
+  width: 0;
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+.reveal.is-visible .title-line {
+  width: 3rem;
+}
+
+/* Card + image + button */
+.card-lift {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.card-img {
+  transform: scale(1.1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.38) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+/* Hover effects only on devices that really hover (no sticky hover on phones) */
+@media (hover: hover) {
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 34px -10px rgba(255, 92, 147, 0.35);
+    border-color: #ffc9da;
+  }
+  .card-lift:hover .card-img {
+    transform: scale(1.2);
+  }
+  .btn-shine:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.7s ease;
+  }
+}
+
+/* Touch devices: small press feedback instead of hover */
+@media (hover: none) {
+  .card-lift:active {
+    transform: scale(0.98);
+  }
+}
+.btn-shine:active {
+  transform: scale(0.96);
+}
+
+/* Wishlist heart + "Added!" check */
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.45); }
+  100% { transform: scale(1); }
+}
+@keyframes checkPop {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  70% { transform: scale(1.35) rotate(0); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.heart-pop {
+  animation: heartPop 0.45s ease;
+}
+.check-pop {
+  animation: checkPop 0.4s ease both;
+}
+
+/* Respect users who turned animations off */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal .title-line,
+  .card-lift,
+  .card-img,
+  .btn-shine::after {
+    transition: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal .title-line {
+    width: 3rem;
+  }
+  .heart-pop,
+  .check-pop {
+    animation: none;
+  }
+}

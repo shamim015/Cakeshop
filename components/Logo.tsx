@@ -79,7 +79,7 @@ export default function Logo({ small = false }: { small?: boolean }) {
   return (
     <Link href="/" className="group flex items-center gap-2" aria-label="CakeShop home">
       <CakeIcon3D
-        className={`transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-110 ${small ? "h-9 w-9" : "h-12 w-12"}`}
+        className={`transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-110 ${small ? "h-10 w-10" : "h-[52px] w-[52px] md:h-14 md:w-14"}`}
       />
       <span className="leading-none">
         <span className={`block font-script font-bold text-brand-ink ${small ? "text-2xl" : "text-4xl"}`}>Cake<span className="text-brand">Shop</span></span>

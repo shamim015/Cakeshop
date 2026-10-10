@@ -56,7 +56,7 @@ export default function Header() {
         </div>
       </div>
       <div className="border-b border-gray-100 shadow-sm">
-        <div className="container-wide flex h-16 items-center md:h-[88px] justify-between">
+        <div className="container-wide flex h-16 items-center md:h-[72px] justify-between">
           <Logo />
           <nav aria-label="Main" className="hidden items-center gap-9 text-[14px] md:flex">
             {nav.map((n) => (

@@ -107,9 +107,9 @@ export default function CartView() {
           <span>{rs(total)}</span>
         </div>
 
-        <button type="button" className="btn-primary mt-5 w-full">
+        <Link href="/checkout" className="btn-primary mt-5 w-full">
           Proceed to Checkout
-        </button>
+        </Link>
         <Link href="/" className="btn-outline mt-3 w-full">
           Continue Shopping
         </Link>

@@ -5,7 +5,7 @@ export default function CustomCakeBanner() {
   return (
     <section className="relative bg-gradient-to-r from-[#FDEBF1] via-[#FFD9E5] to-[#FBC9DA]">
       <div className="container-wide grid items-center md:min-h-[232px] md:grid-cols-2">
-        <div className="py-8 md:py-0">
+        <div className="pb-0 pt-8 md:py-0">
           <h2 className="font-serif text-3xl font-bold leading-[1.1] md:text-[32px]">
             Custom Cake for
             <br />
@@ -23,7 +23,7 @@ export default function CustomCakeBanner() {
         </div>
         {/* TODO: replace with /public/images/custom-cake.jpg */}
         <div className="relative md:h-full">
-          <div className="relative mx-auto h-[220px] w-full max-w-[360px] md:absolute md:-bottom-[9px] md:left-[calc(22%+22px)] md:mx-0 md:h-[264px] md:w-[284px] md:max-w-none">
+          <div className="relative mx-auto h-[260px] w-full max-w-[360px] md:absolute md:-bottom-[9px] md:left-[calc(22%+22px)] md:mx-0 md:h-[264px] md:w-[284px] md:max-w-none">
             <Image
               src="/images/chocolate-delight.webp"
               alt="Chocolate custom cake"

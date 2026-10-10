@@ -36,7 +36,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   // Buy Now: add this cake to the cart, then go straight to the My Cart page
   const handleBuyNow = () => {
-    addToCart(product);
+    addToCart(product, false);
     router.push("/cart");
   };
 

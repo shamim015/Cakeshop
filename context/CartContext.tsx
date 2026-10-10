@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { Product } from "@/types";
+import CartToast, { type CartToastData } from "@/components/CartToast";
 
 export interface CartItem {
   id: string;
@@ -24,8 +25,8 @@ interface CartContextValue {
   total: number;
   loaded: boolean;
   updateQty: (id: string, qty: number) => void;
-  addToCart: (product: Product) => void;
-  addCustomItem: (item: CustomCartItem) => void;
+  addToCart: (product: Product, notify?: boolean) => void;
+  addCustomItem: (item: CustomCartItem, notify?: boolean) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 }
@@ -36,6 +37,7 @@ const STORAGE_KEY = "cakeshop-cart";
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [toast, setToast] = useState<CartToastData | null>(null);
 
   // Load saved cart once in the browser
   useEffect(() => {
@@ -54,7 +56,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [items, loaded]);
 
-  const addToCart = useCallback((product: Product) => {
+  // notify=false skips the "Successfully Added" popup (used when we jump straight to the cart page)
+  const addToCart = useCallback((product: Product, notify = true) => {
+    if (notify) setToast({ id: Date.now(), name: product.name, image: product.image });
     setItems((prev) => {
       const found = prev.find((i) => i.id === product.id);
       if (found) {
@@ -68,7 +72,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Custom cakes are always their own cart line (unique id), never merged with another
-  const addCustomItem = useCallback((item: CustomCartItem) => {
+  const addCustomItem = useCallback((item: CustomCartItem, notify = true) => {
+    if (notify) setToast({ id: Date.now(), name: item.name, image: item.image });
     const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     setItems((prev) => [...prev, { id, ...item, qty: 1 }]);
   }, []);
@@ -102,7 +107,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [items, loaded, updateQty, addToCart, addCustomItem, removeFromCart, clearCart]
   );
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+      <CartToast toast={toast} onClose={() => setToast(null)} />
+    </CartContext.Provider>
+  );
 }
 
 export function useCart() {

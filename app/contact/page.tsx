@@ -13,7 +13,7 @@ export default function ContactPage() {
             <Phone className="h-6 w-6" />
           </span>
           <h2 className="mt-4 font-serif text-lg font-bold">Call us</h2>
-          <p className="mt-2 text-sm text-gray-600">+92 300 1234567</p>
+          <p className="mt-2 text-sm text-gray-600">01521233469</p>
           <a href="tel:+923001234567" className="btn-primary mt-4 !px-8">Call Now</a>
         </div>
         <div className="rounded-xl bg-brand-soft p-6 text-center">

@@ -38,14 +38,12 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-pink-100">
-        <div className="container-wide flex flex-col items-center justify-between gap-3 py-3 text-[12px] text-gray-600 sm:flex-row">
-          <div className="text-center sm:text-left">
-            <p>© 2026 CakeShop. All Rights Reserved.</p>
-            <p className="mt-1 text-[11px] text-gray-500">
-              Developed by <span className="font-semibold text-brand">Shamimur Rahman</span>
-            </p>
-          </div>
-          <ul className="flex items-center gap-4 text-[13px] font-bold italic">
+        <div className="container-wide grid items-center gap-3 py-3 text-[12px] text-gray-600 sm:grid-cols-3">
+          <p className="text-center sm:text-left">© 2026 CakeShop. All Rights Reserved.</p>
+          <p className="text-center text-[11px] text-gray-500">
+            Developed by <span className="font-semibold text-brand">Shamimur Rahman</span>
+          </p>
+          <ul className="flex items-center justify-center gap-4 text-[13px] font-bold italic sm:justify-end">
             {pay.map((p) => (<li key={p.n} className={p.c}>{p.n}</li>))}
           </ul>
         </div>

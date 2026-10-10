@@ -105,7 +105,7 @@ export default function CustomCakeForm() {
       ...(notes.trim() ? [`Notes: ${notes.trim()}`] : []),
     ];
 
-    addCustomItem({ name: `Custom ${flavor.name} Cake`, price, image: flavor.image, details });
+    addCustomItem({ name: `Custom ${flavor.name} Cake`, price, image: flavor.image, details }, !goToCart);
 
     if (goToCart) {
       router.push("/cart");

@@ -65,7 +65,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {Array.from({ length: 5 }).map((_, i) => (<Star key={i} className={`h-3 w-3 ${i < Math.round(rating) ? "fill-amber-400 text-amber-400" : "text-gray-300"}`} />))}
           <span className="text-[11px] text-gray-500">({reviews})</span>
         </div>
-        <p className="mt-1.5 text-[15px] font-bold">Rs. {price.toLocaleString("en-US")}</p>
+        <p className="mt-1.5 text-[15px] font-bold">Tk {price.toLocaleString("en-US")}</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <button
             type="button"

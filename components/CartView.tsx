@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
-const rs = (n: number) => `Rs. ${n.toLocaleString("en-US")}`;
+const rs = (n: number) => `Tk ${n.toLocaleString("en-US")}`;
 
 export default function CartView() {
   const { items, count, total, loaded, updateQty, removeFromCart, clearCart } = useCart();
@@ -42,6 +42,13 @@ export default function CartView() {
             <div className="min-w-0 flex-1">
               <h3 className="text-[15px] font-bold">{item.name}</h3>
               <p className="mt-1 text-sm text-gray-500">{rs(item.price)}</p>
+              {item.details && item.details.length > 0 && (
+                <ul className="mt-1.5 space-y-0.5 text-xs text-gray-500">
+                  {item.details.map((d) => (
+                    <li key={d} className="break-words">{d}</li>
+                  ))}
+                </ul>
+              )}
 
               <div className="mt-3 inline-flex items-center rounded border border-gray-200">
                 <button

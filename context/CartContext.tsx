@@ -8,6 +8,14 @@ export interface CartItem {
   price: number;
   image: string;
   qty: number;
+  details?: string[]; // extra lines for custom cakes (flavor, size, message...)
+}
+
+export interface CustomCartItem {
+  name: string;
+  price: number;
+  image: string;
+  details: string[];
 }
 
 interface CartContextValue {
@@ -17,6 +25,7 @@ interface CartContextValue {
   loaded: boolean;
   updateQty: (id: string, qty: number) => void;
   addToCart: (product: Product) => void;
+  addCustomItem: (item: CustomCartItem) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 }
@@ -58,6 +67,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  // Custom cakes are always their own cart line (unique id), never merged with another
+  const addCustomItem = useCallback((item: CustomCartItem) => {
+    const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    setItems((prev) => [...prev, { id, ...item, qty: 1 }]);
+  }, []);
+
   const updateQty = useCallback((id: string, qty: number) => {
     setItems((prev) =>
       qty <= 0
@@ -80,10 +95,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       loaded,
       updateQty,
       addToCart,
+      addCustomItem,
       removeFromCart,
       clearCart,
     }),
-    [items, loaded, updateQty, addToCart, removeFromCart, clearCart]
+    [items, loaded, updateQty, addToCart, addCustomItem, removeFromCart, clearCart]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

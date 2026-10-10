@@ -212,3 +212,40 @@ body {
 .card-lift.is-hover .card-img {
   transform: scale(1.2);
 }
+
+/* ---------- Custom cake page ---------- */
+@keyframes swapIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.swap-in {
+  animation: swapIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .swap-in {
+    animation: none;
+  }
+}
+
+/* ---------- Custom cake banner: cake hover ---------- */
+.cake-hover {
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 6px 8px rgba(90, 50, 30, 0.18));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+}
+@media (hover: hover) {
+  .cake-stage:hover .cake-hover {
+    transform: translateY(-6px) scale(1.05) rotate(-2deg);
+    filter: drop-shadow(0 22px 18px rgba(90, 50, 30, 0.35));
+  }
+}
+/* touch: set by CakeHoverImage.tsx after a tap */
+.cake-stage.is-hover .cake-hover {
+  transform: translateY(-6px) scale(1.05) rotate(-2deg);
+  filter: drop-shadow(0 22px 18px rgba(90, 50, 30, 0.35));
+}
+@media (prefers-reduced-motion: reduce) {
+  .cake-hover {
+    transition: none !important;
+  }
+}

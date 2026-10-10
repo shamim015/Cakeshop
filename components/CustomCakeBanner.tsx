@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import CakeHoverImage from "./CakeHoverImage";
 export default function CustomCakeBanner() {
   return (
     <section className="relative bg-gradient-to-r from-[#FDEBF1] via-[#FFD9E5] to-[#FBC9DA]">
@@ -23,15 +23,7 @@ export default function CustomCakeBanner() {
         </div>
         {/* TODO: replace with /public/images/custom-cake.jpg */}
         <div className="relative md:h-full">
-          <div className="relative mx-auto h-[260px] w-full max-w-[360px] md:absolute md:-bottom-[9px] md:left-[calc(22%+22px)] md:mx-0 md:h-[264px] md:w-[284px] md:max-w-none">
-            <Image
-              src="/images/chocolate-delight.webp"
-              alt="Chocolate custom cake"
-              fill
-              sizes="(min-width:768px) 284px, 100vw"
-              className="object-contain object-bottom"
-            />
-          </div>
+          <CakeHoverImage />
         </div>
       </div>
     </section>

@@ -30,8 +30,8 @@ const nav: { label: string; href: string; dropdown: boolean; menu?: { label: str
 
 // Edit the offer text here. `short` is shown on phones, `full` from tablet size up.
 const offer = {
-  short: "Free delivery above Rs. 3,000",
-  full: "Free delivery on orders above Rs. 3,000 · Use code CAKE10 for 10% OFF",
+  short: "Free delivery above Tk 3,000",
+  full: "Free delivery on orders above Tk 3,000 · Use code CAKE10 for 10% OFF",
 };
 
 export default function Header() {

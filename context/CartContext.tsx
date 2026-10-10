@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Product } from "@/types";
 import CartToast, { type CartToastData } from "@/components/CartToast";
 
@@ -25,7 +25,8 @@ interface CartContextValue {
   total: number;
   loaded: boolean;
   updateQty: (id: string, qty: number) => void;
-  addToCart: (product: Product, notify?: boolean) => void;
+  // returns true if the cake was added, false if it was already in the cart
+  addToCart: (product: Product, notify?: boolean) => boolean;
   addCustomItem: (item: CustomCartItem, notify?: boolean) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -38,6 +39,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [toast, setToast] = useState<CartToastData | null>(null);
+  const itemsRef = useRef<CartItem[]>([]);
+  itemsRef.current = items; // always the latest cart, readable inside callbacks
 
   // Load saved cart once in the browser
   useEffect(() => {
@@ -56,24 +59,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [items, loaded]);
 
-  // notify=false skips the "Successfully Added" popup (used when we jump straight to the cart page)
-  const addToCart = useCallback((product: Product, notify = true) => {
-    if (notify) setToast({ id: Date.now(), name: product.name, image: product.image });
-    setItems((prev) => {
-      const found = prev.find((i) => i.id === product.id);
-      if (found) {
-        return prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + 1 } : i));
-      }
-      return [
-        ...prev,
-        { id: product.id, name: product.name, price: product.price, image: product.image, qty: 1 },
-      ];
-    });
+  // A cake can be added only once. A second try shows an "already added" notice instead.
+  // notify=false skips the popup (used when we jump straight to the cart page).
+  const addToCart = useCallback((product: Product, notify = true): boolean => {
+    if (itemsRef.current.some((i) => i.id === product.id)) {
+      if (notify) setToast({ id: Date.now(), name: product.name, image: product.image, variant: "exists" });
+      return false;
+    }
+    if (notify) setToast({ id: Date.now(), name: product.name, image: product.image, variant: "added" });
+    const item: CartItem = { id: product.id, name: product.name, price: product.price, image: product.image, qty: 1 };
+    itemsRef.current = [...itemsRef.current, item]; // so a very fast double-click cannot add it twice
+    setItems((prev) => [...prev, item]);
+    return true;
   }, []);
 
   // Custom cakes are always their own cart line (unique id), never merged with another
   const addCustomItem = useCallback((item: CustomCartItem, notify = true) => {
-    if (notify) setToast({ id: Date.now(), name: item.name, image: item.image });
+    if (notify) setToast({ id: Date.now(), name: item.name, image: item.image, variant: "added" });
     const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     setItems((prev) => [...prev, { id, ...item, qty: 1 }]);
   }, []);

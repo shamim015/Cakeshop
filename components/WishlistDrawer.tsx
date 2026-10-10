@@ -2,15 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Heart, ShoppingCart, Star, Trash2, X } from "lucide-react";
+import { Check, Heart, Info, ShoppingCart, Star, Trash2, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
 // Slide-in "My Favorites" panel, opened from the heart icon in the navbar.
 export default function WishlistDrawer() {
   const { items, count, isOpen, remove, closeDrawer } = useWishlist();
-  const { addToCart } = useCart();
+  const { addToCart, items: cartItems } = useCart();
   const [justAdded, setJustAdded] = useState<string | null>(null);
+  const [dup, setDup] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -31,10 +32,12 @@ export default function WishlistDrawer() {
   }, [isOpen, closeDrawer]);
 
   const handleAdd = (p: (typeof items)[number]) => {
-    addToCart(p, false); // the button itself shows "Added", no popup on top of the panel
-    setJustAdded(p.id);
+    // the button itself shows the result, no popup on top of the panel
+    const added = addToCart(p, false);
+    if (added) setJustAdded(p.id);
+    else setDup(p.id);
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setJustAdded(null), 1500);
+    timer.current = setTimeout(() => { setJustAdded(null); setDup(null); }, 1800);
   };
 
   return (
@@ -97,10 +100,26 @@ export default function WishlistDrawer() {
                     </div>
                     <div className="mt-auto flex items-center justify-between gap-2 pt-2">
                       <p className="text-[14px] font-bold">Tk {p.price.toLocaleString("en-US")}</p>
-                      <button type="button" onClick={() => handleAdd(p)} className="btn-primary btn-shine !rounded-[3px] !px-3 !py-1.5 text-[10px]">
-                        {justAdded === p.id ? <Check className="check-pop h-3 w-3" /> : <ShoppingCart className="h-3 w-3" />}
-                        {justAdded === p.id ? "Added" : "Add to Cart"}
-                      </button>
+                      {(() => {
+                        const inCart = cartItems.some((c) => c.id === p.id);
+                        const showDup = dup === p.id;
+                        return (
+                          <button
+                            type="button"
+                            onClick={() => handleAdd(p)}
+                            className={`btn-shine inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-[3px] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide transition ${
+                              showDup
+                                ? "border border-amber-500 bg-amber-50 text-amber-700"
+                                : inCart && justAdded !== p.id
+                                  ? "border border-gray-300 bg-white text-gray-600 hover:border-brand hover:text-brand"
+                                  : "bg-brand text-white hover:bg-brand-dark"
+                            }`}
+                          >
+                            {showDup ? <Info className="h-3 w-3" /> : inCart ? <Check className={`h-3 w-3 ${justAdded === p.id ? "check-pop" : ""}`} /> : <ShoppingCart className="h-3 w-3" />}
+                            {showDup ? "Already added" : justAdded === p.id ? "Added" : inCart ? "In Cart" : "Add to Cart"}
+                          </button>
+                        );
+                      })()}
                     </div>
                   </div>
                 </li>

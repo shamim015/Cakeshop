@@ -30,7 +30,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }, [touched]);
 
   const handleAdd = () => {
-    addToCart(product);
+    if (!addToCart(product)) return; // already in cart -> popup says so, nothing else changes
     setAdded(true);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setAdded(false), 1500);

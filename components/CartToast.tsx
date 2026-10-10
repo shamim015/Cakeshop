@@ -2,12 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, Info, X } from "lucide-react";
 
 export interface CartToastData {
   id: number;
   name: string;
   image: string;
+  variant: "added" | "exists";
 }
 
 // Success popup shown after a cake is added to the cart.
@@ -30,6 +31,7 @@ export default function CartToast({ toast, onClose }: { toast: CartToastData | n
   };
 
   if (!toast) return null;
+  const exists = toast.variant === "exists";
 
   return (
     <div className="pointer-events-none fixed inset-x-3 top-3 z-[100] flex justify-center sm:inset-x-auto sm:right-5 sm:top-5 sm:block">
@@ -43,14 +45,14 @@ export default function CartToast({ toast, onClose }: { toast: CartToastData | n
         <div className="flex items-start gap-3 p-3.5 pr-9">
           <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-brand-soft">
             <Image src={toast.image} alt="" fill sizes="56px" className="object-contain p-1" />
-            <span className="absolute -bottom-0 -right-0 flex h-5 w-5 items-center justify-center rounded-tl-lg bg-emerald-500 text-white">
-              <Check className="check-pop h-3 w-3" strokeWidth={3} />
+            <span className={`absolute -bottom-0 -right-0 flex h-5 w-5 items-center justify-center rounded-tl-lg text-white ${exists ? "bg-amber-500" : "bg-emerald-500"}`}>
+              {exists ? <Info className="check-pop h-3 w-3" strokeWidth={3} /> : <Check className="check-pop h-3 w-3" strokeWidth={3} />}
             </span>
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-bold text-emerald-600">Successfully Added</p>
+            <p className={`text-[13px] font-bold ${exists ? "text-amber-600" : "text-emerald-600"}`}>{exists ? "Already Added" : "Successfully Added"}</p>
             <p className="mt-0.5 truncate text-[13px] font-semibold text-brand-ink">{toast.name}</p>
-            <p className="text-[11px] text-gray-500">has been added to your cart.</p>
+            <p className="text-[11px] text-gray-500">{exists ? "You already added this product to your cart." : "has been added to your cart."}</p>
             <div className="mt-2.5 flex items-center gap-3">
               <Link
                 href="/cart"
@@ -75,7 +77,7 @@ export default function CartToast({ toast, onClose }: { toast: CartToastData | n
         </button>
         {/* countdown bar – when it finishes the popup closes */}
         <div className="h-[3px] w-full bg-gray-100">
-          <div key={toast.id} onAnimationEnd={close} className="toast-bar h-full origin-left bg-brand" />
+          <div key={toast.id} onAnimationEnd={close} className={`toast-bar h-full origin-left ${exists ? "bg-amber-500" : "bg-brand"}`} />
         </div>
       </div>
     </div>

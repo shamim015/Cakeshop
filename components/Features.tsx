@@ -8,7 +8,7 @@ const features = [
 export default function Features() {
   return (
     <section aria-label="Our promises" className="relative z-20 -mt-12">
-      <div className="mx-auto max-w-[1160px] px-4">
+      <div className="container-wide">
         <div className="rounded-xl bg-white p-2 shadow-[0_4px_20px_rgba(255,92,147,0.12)]">
           <ul className="grid grid-cols-2 gap-y-6 rounded-lg bg-[#FFF7FA] px-2 py-5 md:grid-cols-4 md:px-6">
             {features.map(({ icon: Icon, title, text }, i) => (

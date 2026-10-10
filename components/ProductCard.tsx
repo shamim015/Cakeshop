@@ -5,8 +5,10 @@ export default function ProductCard({ product }: { product: Product }) {
   const { name, price, rating, reviews, image } = product;
   return (
     <article className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition hover:shadow-lg">
-      <div className="relative aspect-[1.41/1] bg-brand-soft">
-        <Image src={image} alt={name} fill sizes="(min-width:1024px) 280px, 50vw" className="object-cover" />
+      <div className="relative aspect-[1.28/1] bg-brand-soft">
+        <div className="absolute inset-x-0 bottom-4 top-0">
+          <Image src={image} alt={name} fill sizes="(min-width:1024px) 280px, 50vw" className="scale-110 object-contain" />
+        </div>
         <button aria-label={`Add ${name} to wishlist`} className="absolute right-4 top-4 flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white text-brand shadow hover:bg-brand hover:text-white">
           <Heart className="h-3.5 w-3.5" />
         </button>

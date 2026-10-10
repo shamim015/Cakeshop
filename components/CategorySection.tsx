@@ -4,7 +4,7 @@ import { categories } from "@/data/categories";
 export default function CategorySection() {
   return (
     <section className="pb-8 pt-6">
-      <div className="container-x">
+      <div className="container-wide">
         <h2 className="section-title text-center">Shop by Category<span className="title-line" /></h2>
         <ul className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
           {categories.map((c) => (

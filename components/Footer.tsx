@@ -15,7 +15,7 @@ const LinkList = ({ title, items }: { title: string; items: string[] }) => (
 export default function Footer() {
   return (
     <footer className="bg-[#FFF8FA]">
-      <div className="container-x grid gap-8 pb-5 pt-7 sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1.35fr]">
+      <div className="container-wide grid gap-8 pb-5 pt-7 sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1.35fr]">
         <div>
           <Logo small />
           <p className="mt-3 text-[11px] leading-[1.75] text-gray-600">We bake more than cakes,<br />we bake happiness!<br />Thank you for choosing us.</p>
@@ -38,8 +38,8 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-pink-100">
-        <div className="container-x flex flex-col items-center justify-between gap-3 py-3 text-[12px] text-gray-600 sm:flex-row">
-          <p>© 2024 CakeShop. All Rights Reserved.</p>
+        <div className="container-wide flex flex-col items-center justify-between gap-3 py-3 text-[12px] text-gray-600 sm:flex-row">
+          <p>© 2026 CakeShop. All Rights Reserved.</p>
           <ul className="flex items-center gap-4 text-[13px] font-bold italic">
             {pay.map((p) => (<li key={p.n} className={p.c}>{p.n}</li>))}
           </ul>

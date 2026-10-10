@@ -26,7 +26,7 @@ export default function Hero() {
           </div>
         </div>
         {/* TODO: replace with /public/images/hero-cake.jpg */}
-        <div className="relative h-[300px] md:absolute md:inset-y-0 md:right-0 md:h-auto md:w-[50%]">
+        <div className="relative -mx-4 h-[300px] sm:h-[360px] md:absolute md:inset-y-0 md:right-0 md:mx-0 md:h-auto md:w-[50%]">
           <Image
             src="/images/hero-cake.webp"
             alt="Pink rose cake on a cake stand"

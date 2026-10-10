@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, MapPin, Phone, Mail, Facebook, Instagram, MessageCircle } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Truck, Phone, Mail, Facebook, Instagram, MessageCircle } from "lucide-react";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 
@@ -28,6 +28,12 @@ const nav: { label: string; href: string; dropdown: boolean; menu?: { label: str
   { label: "Contact", href: "/contact", dropdown: false },
 ];
 
+// Edit the offer text here. `short` is shown on phones, `full` from tablet size up.
+const offer = {
+  short: "Free delivery above Rs. 3,000",
+  full: "Free delivery on orders above Rs. 3,000 · Use code CAKE10 for 10% OFF",
+};
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { count } = useCart();
@@ -36,9 +42,13 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white">
       <div className="bg-[#FDB5CE] text-[11px] text-white">
-        <div className="container-wide flex h-9 items-center justify-between">
-          <span className="flex items-center gap-1.5"><MapPin className="h-3 w-3" />Delivering happiness to your doorsteps!</span>
-          <div className="hidden items-center gap-4 sm:flex">
+        <div className="container-wide flex h-9 items-center justify-center sm:justify-between">
+          <p className="flex min-w-0 items-center gap-1.5 font-medium">
+            <Truck className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate sm:hidden">{offer.short}</span>
+            <span className="hidden truncate sm:inline">{offer.full}</span>
+          </p>
+          <div className="hidden items-center gap-4 lg:flex">
             <a href="tel:+923001234567" className="flex items-center gap-1"><Phone className="h-3 w-3" />+92 300 1234567</a>
             <a href="mailto:info@cakeshop.com" className="flex items-center gap-1"><Mail className="h-3 w-3" />info@cakeshop.com</a>
             <Facebook className="h-3 w-3" aria-label="Facebook" /><Instagram className="h-3 w-3" aria-label="Instagram" /><MessageCircle className="h-3 w-3" aria-label="WhatsApp" />

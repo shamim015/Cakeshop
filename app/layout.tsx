@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Tinos, Dancing_Script } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const serif = Tinos({
@@ -24,7 +25,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable} ${script.variable}`}>
-      <body>{children}</body>
+      <body>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

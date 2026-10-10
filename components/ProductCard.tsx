@@ -1,8 +1,18 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Check, Heart, ShoppingCart, Star } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import type { Product } from "@/types";
 export default function ProductCard({ product }: { product: Product }) {
   const { name, price, rating, reviews, image } = product;
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
+  const handleAdd = () => {
+    addToCart(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
   return (
     <article className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition hover:shadow-lg">
       <div className="relative aspect-[1.28/1] bg-brand-soft">
@@ -20,7 +30,10 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="text-[11px] text-gray-500">({reviews})</span>
         </div>
         <p className="mt-1.5 text-[15px] font-bold">Rs. {price.toLocaleString("en-US")}</p>
-        <button className="btn-primary mt-3 w-[62%] min-w-[130px] !rounded-[3px] !px-3 !py-2 text-[10px]"><ShoppingCart className="h-3 w-3" />Add to Cart</button>
+        <button type="button" onClick={handleAdd} className="btn-primary mt-3 w-[62%] min-w-[130px] !rounded-[3px] !px-3 !py-2 text-[10px]">
+          {added ? <Check className="h-3 w-3" /> : <ShoppingCart className="h-3 w-3" />}
+          {added ? "Added!" : "Add to Cart"}
+        </button>
       </div>
     </article>
   );

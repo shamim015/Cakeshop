@@ -12,8 +12,20 @@ export default function ProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const [wished, setWished] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>();
+  const cardRef = useRef<HTMLElement>(null);
+  const [touched, setTouched] = useState(false); // touch "hover" state for phones/tablets
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // Touch devices have no hover: after a tap keep the hover look until the user taps elsewhere
+  useEffect(() => {
+    if (!touched) return;
+    const off = (e: PointerEvent) => {
+      if (!cardRef.current?.contains(e.target as Node)) setTouched(false);
+    };
+    document.addEventListener("pointerdown", off);
+    return () => document.removeEventListener("pointerdown", off);
+  }, [touched]);
 
   const handleAdd = () => {
     addToCart(product);
@@ -29,7 +41,10 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="card-lift h-full overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <article
+      ref={cardRef}
+      onPointerUp={(e) => { if (e.pointerType !== "mouse") setTouched(true); }}
+      className={`card-lift ${touched ? "is-hover" : ""} h-full overflow-hidden rounded-lg border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]`}>
       <div className="relative aspect-[1.28/1] overflow-hidden bg-brand-soft">
         <div className="absolute inset-x-0 bottom-4 top-0">
           <Image src={image} alt={name} fill sizes="(min-width:1024px) 280px, 50vw" className="card-img object-contain" />

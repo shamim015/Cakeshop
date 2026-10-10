@@ -99,12 +99,6 @@ body {
   }
 }
 
-/* Touch devices: small press feedback instead of hover */
-@media (hover: none) {
-  .card-lift:active {
-    transform: scale(0.98);
-  }
-}
 .btn-shine:active {
   transform: scale(0.96);
 }
@@ -147,4 +141,74 @@ body {
   .check-pop {
     animation: none;
   }
+}
+
+/* ---------- Shop by Category animations ---------- */
+
+/* Pop-in variant of the scroll reveal (used with <Reveal className="reveal-pop">) */
+.reveal.reveal-pop {
+  transform: translateY(24px) scale(0.85);
+}
+.reveal.reveal-pop.is-visible {
+  transform: none;
+}
+
+.cat-circle {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+.cat-img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cat-label {
+  padding-bottom: 3px;
+  background-image: linear-gradient(#ff5c93, #ff5c93);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 0% 2px;
+  transition: color 0.3s ease, background-size 0.35s ease;
+}
+
+@media (hover: hover) {
+  .cat-link:hover .cat-circle {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 0 0 4px rgba(255, 92, 147, 0.3), 0 16px 28px -8px rgba(255, 92, 147, 0.45);
+  }
+  .cat-link:hover .cat-img {
+    transform: scale(1.12);
+  }
+  .cat-link:hover .cat-label {
+    color: #ff5c93;
+    background-size: 100% 2px;
+  }
+}
+
+/* Touch devices: press feedback */
+@media (hover: none) {
+  .cat-link:active .cat-circle {
+    transform: scale(0.94);
+  }
+  .cat-link:active .cat-label {
+    color: #ff5c93;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cat-circle,
+  .cat-img,
+  .cat-label {
+    transition: none !important;
+  }
+  .reveal.reveal-pop {
+    transform: none;
+  }
+}
+
+/* Product card: same look as desktop hover, applied on phones/tablets after a tap (.is-hover set in ProductCard.tsx) */
+.card-lift.is-hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 34px -10px rgba(255, 92, 147, 0.35);
+  border-color: #ffc9da;
+}
+.card-lift.is-hover .card-img {
+  transform: scale(1.2);
 }

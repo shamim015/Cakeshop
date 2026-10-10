@@ -41,8 +41,10 @@ export default function Header() {
   const { count: favCount, openDrawer } = useWishlist();
   const pathname = usePathname() || "/";
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  // The pink offer bar is a normal block (scrolls away). Only the navbar below it is sticky.
   return (
-    <header className="sticky top-0 z-50 bg-white">
+    <>
+      {/* Offer bar: scrolls away with the page */}
       <div className="bg-[#FDB5CE] text-[11px] text-white">
         <div className="container-wide flex h-9 items-center justify-center sm:justify-between">
           <p className="flex min-w-0 items-center gap-1.5 font-medium">
@@ -57,7 +59,8 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="border-b border-gray-100 shadow-sm">
+      {/* Main navbar: stays pinned to the top while scrolling */}
+      <header className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm">
         <div className="container-wide flex h-16 items-center md:h-[72px] justify-between">
           <Logo />
           <nav aria-label="Main" className="hidden items-center gap-9 text-[14px] md:flex">
@@ -80,7 +83,7 @@ export default function Header() {
               </div>
             ))}
           </nav>
-          <div className="flex items-center gap-4 md:gap-7">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-7">
             <button aria-label="Search" className="hover:text-brand"><Search className="h-5 w-5" /></button>
             <button aria-label="Account" className="hidden hover:text-brand sm:block"><User className="h-5 w-5" /></button>
             <button type="button" onClick={openDrawer} aria-label={`Favorites (${favCount})`} aria-haspopup="dialog" className="relative hover:text-brand">
@@ -103,7 +106,7 @@ export default function Header() {
             {nav.map((n) => (<Link key={n.label} href={n.href} onClick={() => setOpen(false)} className={`py-2 text-sm hover:text-brand ${isActive(n.href) ? "text-brand" : ""}`}>{n.label}</Link>))}
           </nav>
         )}
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

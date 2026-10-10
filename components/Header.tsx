@@ -2,22 +2,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Search,
-  User,
-  ShoppingCart,
-  Menu,
-  X,
-  ChevronDown,
-  Truck,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  MessageCircle,
-} from "lucide-react";
+import { Search, User, Heart, ShoppingCart, Menu, X, ChevronDown, Truck, Phone, Mail, Facebook, Instagram, MessageCircle } from "lucide-react";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 const cakeMenu = [
   { label: "Birthday Cakes", href: "/shop?c=birthday" },
@@ -32,21 +20,11 @@ const occasionMenu = [
   { label: "Anniversary", href: "/occasions#anniversary" },
 ];
 
-const nav: {
-  label: string;
-  href: string;
-  dropdown: boolean;
-  menu?: { label: string; href: string }[];
-}[] = [
+const nav: { label: string; href: string; dropdown: boolean; menu?: { label: string; href: string }[] }[] = [
   { label: "Home", href: "/", dropdown: false },
   { label: "Shop", href: "/shop", dropdown: false },
   { label: "Cakes", href: "/cakes", dropdown: true, menu: cakeMenu },
-  {
-    label: "Occasions",
-    href: "/occasions",
-    dropdown: true,
-    menu: occasionMenu,
-  },
+  { label: "Occasions", href: "/occasions", dropdown: true, menu: occasionMenu },
   { label: "About Us", href: "/about", dropdown: false },
   { label: "Contact", href: "/contact", dropdown: false },
 ];
@@ -60,9 +38,9 @@ const offer = {
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { count } = useCart();
+  const { count: favCount, openDrawer } = useWishlist();
   const pathname = usePathname() || "/";
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   return (
     <header className="sticky top-0 z-50 bg-white">
       <div className="bg-[#FDB5CE] text-[11px] text-white">
@@ -73,52 +51,27 @@ export default function Header() {
             <span className="hidden truncate sm:inline">{offer.full}</span>
           </p>
           <div className="hidden items-center gap-4 lg:flex">
-            <a href="tel:01521233469" className="flex items-center gap-1">
-              <Phone className="h-3 w-3" />
-              01521233469
-            </a>
-            <a
-              href="mailto:info@cakeshop.com"
-              className="flex items-center gap-1"
-            >
-              <Mail className="h-3 w-3" />
-              info@cakeshop.com
-            </a>
-            <Facebook className="h-3 w-3" aria-label="Facebook" />
-            <Instagram className="h-3 w-3" aria-label="Instagram" />
-            <MessageCircle className="h-3 w-3" aria-label="WhatsApp" />
+            <a href="tel:+923001234567" className="flex items-center gap-1"><Phone className="h-3 w-3" />+92 300 1234567</a>
+            <a href="mailto:info@cakeshop.com" className="flex items-center gap-1"><Mail className="h-3 w-3" />info@cakeshop.com</a>
+            <Facebook className="h-3 w-3" aria-label="Facebook" /><Instagram className="h-3 w-3" aria-label="Instagram" /><MessageCircle className="h-3 w-3" aria-label="WhatsApp" />
           </div>
         </div>
       </div>
       <div className="border-b border-gray-100 shadow-sm">
         <div className="container-wide flex h-16 items-center md:h-[72px] justify-between">
           <Logo />
-          <nav
-            aria-label="Main"
-            className="hidden items-center gap-9 text-[14px] md:flex"
-          >
+          <nav aria-label="Main" className="hidden items-center gap-9 text-[14px] md:flex">
             {nav.map((n) => (
               <div key={n.label} className="group relative">
-                <Link
-                  href={n.href}
-                  className={`flex items-center gap-1 py-2 transition hover:text-brand ${isActive(n.href) ? "text-brand" : ""}`}
-                >
-                  {n.label}
-                  {n.dropdown && (
-                    <ChevronDown className="h-3 w-3 transition group-hover:rotate-180" />
-                  )}
+                <Link href={n.href} className={`flex items-center gap-1 py-2 transition hover:text-brand ${isActive(n.href) ? "text-brand" : ""}`}>
+                  {n.label}{n.dropdown && <ChevronDown className="h-3 w-3 transition group-hover:rotate-180" />}
                 </Link>
                 {n.menu && (
                   <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                     <ul className="min-w-[190px] rounded-lg border border-gray-100 bg-white py-2 shadow-lg">
                       {n.menu.map((m) => (
                         <li key={m.label}>
-                          <Link
-                            href={m.href}
-                            className="block px-4 py-2 text-[13px] hover:bg-brand-soft hover:text-brand"
-                          >
-                            {m.label}
-                          </Link>
+                          <Link href={m.href} className="block px-4 py-2 text-[13px] hover:bg-brand-soft hover:text-brand">{m.label}</Link>
                         </li>
                       ))}
                     </ul>
@@ -128,50 +81,26 @@ export default function Header() {
             ))}
           </nav>
           <div className="flex items-center gap-4 md:gap-7">
-            <button aria-label="Search" className="hover:text-brand">
-              <Search className="h-5 w-5" />
+            <button aria-label="Search" className="hover:text-brand"><Search className="h-5 w-5" /></button>
+            <button aria-label="Account" className="hidden hover:text-brand sm:block"><User className="h-5 w-5" /></button>
+            <button type="button" onClick={openDrawer} aria-label={`Favorites (${favCount})`} aria-haspopup="dialog" className="relative hover:text-brand">
+              <Heart className={`h-5 w-5 ${favCount > 0 ? "fill-brand text-brand" : ""}`} />
+              {favCount > 0 && (
+                <span key={favCount} className="badge-bump absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[9px] font-bold text-white">{favCount}</span>
+              )}
             </button>
-            <button
-              aria-label="Account"
-              className="hidden hover:text-brand sm:block"
-            >
-              <User className="h-5 w-5" />
-            </button>
-            <Link
-              href="/cart"
-              aria-label="Cart"
-              className="relative hover:text-brand"
-            >
+            <Link href="/cart" aria-label="Cart" className="relative hover:text-brand">
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[9px] font-bold text-white">
-                {count}
-              </span>
+              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[9px] font-bold text-white">{count}</span>
             </Link>
-            <button
-              aria-label="Menu"
-              aria-expanded={open}
-              onClick={() => setOpen(!open)}
-              className="md:hidden"
-            >
+            <button aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)} className="md:hidden">
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
         {open && (
-          <nav
-            aria-label="Mobile"
-            className="container-wide flex flex-col gap-1 border-t border-gray-100 pb-4 pt-2 md:hidden"
-          >
-            {nav.map((n) => (
-              <Link
-                key={n.label}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className={`py-2 text-sm hover:text-brand ${isActive(n.href) ? "text-brand" : ""}`}
-              >
-                {n.label}
-              </Link>
-            ))}
+          <nav aria-label="Mobile" className="container-wide flex flex-col gap-1 border-t border-gray-100 pb-4 pt-2 md:hidden">
+            {nav.map((n) => (<Link key={n.label} href={n.href} onClick={() => setOpen(false)} className={`py-2 text-sm hover:text-brand ${isActive(n.href) ? "text-brand" : ""}`}>{n.label}</Link>))}
           </nav>
         )}
       </div>

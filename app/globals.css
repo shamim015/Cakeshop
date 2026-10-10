@@ -281,3 +281,26 @@ body {
     animation: none;
   }
 }
+
+/* ---------- Favorites (navbar badge + panel items) ---------- */
+@keyframes badgeBump {
+  0% { transform: scale(0.4); }
+  60% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.badge-bump {
+  animation: badgeBump 0.35s ease;
+}
+@keyframes favItemIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: none; }
+}
+.fav-item {
+  animation: favItemIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-bump,
+  .fav-item {
+    animation: none;
+  }
+}

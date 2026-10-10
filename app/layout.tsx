@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Tinos, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const serif = Tinos({
@@ -26,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable} ${script.variable}`}>
       <body>
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          <WishlistProvider>{children}</WishlistProvider>
+        </CartProvider>
       </body>
     </html>
   );

@@ -4,13 +4,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Check, Heart, ShoppingCart, Star, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import type { Product } from "@/types";
 export default function ProductCard({ product }: { product: Product }) {
   const { name, price, rating, reviews, image } = product;
   const { addToCart } = useCart();
   const router = useRouter();
   const [added, setAdded] = useState(false);
-  const [wished, setWished] = useState(false);
+  const { has, toggle } = useWishlist();
+  const wished = has(product.id);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const cardRef = useRef<HTMLElement>(null);
   const [touched, setTouched] = useState(false); // touch "hover" state for phones/tablets
@@ -51,9 +53,9 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
         <button
           type="button"
-          aria-label={wished ? `Remove ${name} from wishlist` : `Add ${name} to wishlist`}
+          aria-label={wished ? `Remove ${name} from favorites` : `Add ${name} to favorites`}
           aria-pressed={wished}
-          onClick={() => setWished(!wished)}
+          onClick={() => toggle(product)}
           className={`absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full shadow transition-colors sm:right-4 sm:top-4 sm:h-[26px] sm:w-[26px] ${wished ? "bg-brand text-white" : "bg-white text-brand hover:bg-brand hover:text-white"}`}
         >
           <Heart className={`h-3.5 w-3.5 ${wished ? "heart-pop fill-current" : ""}`} />
